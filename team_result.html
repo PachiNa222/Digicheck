@@ -102,8 +102,8 @@
     }
 
     function parseAllLines(text) {
-      // Split by newlines, keep non-empty lines
-      const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+      // Split by newlines, half-width spaces, and full-width spaces
+      const lines = text.split(/[\n\r \u3000]+/).map(l => l.trim()).filter(l => l.length > 0);
       // Map: teamName -> Map: cardName -> totalCount
       const teamMap = new Map();
 
