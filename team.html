@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>チーム戦運営用 - レシピURL解析ツール</title>
+  <meta name="description" content="チーム戦用URLを一括入力してチームごとのカード枚数を集計・解析するツールです。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+
+  <div class="container">
+    <header class="page-header">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="10" fill="url(#gradT)"/>
+          <path d="M10 22v-2a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v2" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="16" cy="11" r="3" stroke="white" stroke-width="1.8"/>
+          <path d="M6 22v-1.5a2 2 0 0 1 2-2" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="8" cy="12" r="2" stroke="white" stroke-width="1.8"/>
+          <defs>
+            <linearGradient id="gradT" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#0ea5e9"/>
+              <stop offset="1" stop-color="#6366f1"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div>
+        <h1 class="page-title page-title--team">チーム戦運営用</h1>
+        <p class="page-subtitle">複数URLを一括入力してチームごとのカード枚数を集計します</p>
+      </div>
+    </header>
+
+    <main class="card">
+      <form id="teamForm" novalidate>
+        <div class="input-group">
+          <label class="input-label" for="teamUrls">
+            <span class="label-badge">URL一覧</span>
+            URLを改行で区切って貼り付けてください（空行可）
+          </label>
+          <textarea
+            id="teamUrls"
+            class="textarea textarea--large"
+            placeholder="URLを1行ずつ貼り付けてください&#10;例:&#10;https://example.com/?teamname=RedTeam&amp;recipe=ex1-001-p12_ex2-003-p23&#10;https://example.com/?teamname=BlueTeam&amp;recipe=ex1-001-p14_ex3-005-p11&#10;&#10;空行があっても問題ありません"
+            rows="18"
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+        <div class="error-msg" id="errorMsg" role="alert" aria-live="polite"></div>
+
+        <button type="submit" class="btn-primary btn-primary--team" id="teamAnalyzeBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+          判定する
+        </button>
+      </form>
+    </main>
+
+    <div class="back-wrap">
+      <a href="index.html" class="btn-back" id="backToIndexBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+        通常ツールに戻る
+      </a>
+    </div>
+
+    <footer class="page-footer">
+      <p>入力した内容はサーバーに送信されません。すべてブラウザ内で処理されます。</p>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('teamForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const input = document.getElementById('teamUrls').value.trim();
+      const errorEl = document.getElementById('errorMsg');
+
+      if (input.length === 0) {
+        errorEl.textContent = 'URLを1件以上入力してください。';
+        errorEl.classList.add('visible');
+        return;
+      }
+
+      errorEl.classList.remove('visible');
+      sessionStorage.setItem('teamInput', input);
+      window.location.href = 'team_result.html';
+    });
+
+    sessionStorage.removeItem('teamInput');
+  </script>
+</body>
+</html>
